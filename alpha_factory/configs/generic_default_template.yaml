@@ -1,0 +1,43 @@
+# 通用实验的默认配置模板
+experiment_name: generic_experiment # 实验名称，建议修改
+
+# BRAIN平台模拟参数
+brain:
+  region: "USA"
+  universe: "TOP3000"
+  delay: 1
+  truncation: 0.08
+  neutralization: "INDUSTRY"
+  # decay, nan_handling, unit_handling, pasteurization 将使用 config_models.py 中的默认值
+
+# 遗传编程核心参数
+gp:
+  d1_population: 30
+  d1_generations: 5
+  d2_population: 25
+  d2_generations: 10
+  d3_population: 20
+  d3_generations: 15
+
+# 适应度函数配置
+fitness:
+  module: "alpha_factory.fitness.legacy_fitness" # 默认使用旧版，可替换为其他 BaseFitnessCalculator 实现
+  class: "LegacyFitness"
+  params:
+    n: 20 # 此参数通常由引擎动态设定
+
+# 遗传编程操作符配置
+operators:
+  terminal_values: ["close", "open", "high", "low", "vwap", "adv20", "volume", "cap", "returns", "dividend"]
+  ts_ops: ["ts_zscore", "ts_rank", "ts_arg_max", "ts_arg_min", "ts_backfill", "ts_delta", "ts_ir", "ts_mean","ts_median", "ts_product", "ts_std_dev"]
+  binary_ops: ["add", "subtract", "divide", "multiply", "max", "min"]
+  ts_ops_values: ["20", "40", "60", "120", "240"]
+  unary_ops: ["rank", "zscore", "winsorize", "normalize", "rank_by_side", "sigmoid", "pasteurize", "log"]
+
+# 核心算法切换配置
+algorithm:
+  engine: "staged"       # 例如 "staged" (分阶段引擎)
+  crossover: "legacy"    # 例如 "legacy" (旧版交叉算子), "generic_crossover_v1"
+  mutation: "legacy"     # 例如 "legacy" (旧版变异算子), "generic_mutation_v1"
+  generator: "legacy"    # 例如 "legacy" (旧版生成器), "generic_generator_v1"
+  converter: "legacy"    # 例如 "legacy" (旧版转换器), "generic_converter_v1"
