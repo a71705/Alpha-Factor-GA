@@ -223,6 +223,19 @@ class SessionManager:
             print(f"错误 (SessionManager._login): 登录过程中发生未知错误: {e}")
             raise ValueError(f"登录过程中发生未知错误: {e}") from e
 
+    def refresh_session(self) -> None:
+        """
+        Refreshes the current session by performing a login.
+        This method is called when an existing session is about to expire.
+        """
+        print("信息 (SessionManager.refresh_session): 会话即将过期或已过期，正在调用 _login 刷新...")
+        try:
+            self._login()
+            print("信息 (SessionManager.refresh_session): 会话刷新成功。")
+        except Exception as e:
+            print(f"错误 (SessionManager.refresh_session): 调用 _login 刷新会话时发生错误: {e}")
+            # Re-raise the exception to allow the caller to handle it
+            raise
 
     def get_session(self) -> requests.Session:
         """
